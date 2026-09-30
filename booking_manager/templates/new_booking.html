@@ -1,0 +1,49 @@
+{%extends "base.html"%}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+
+        <div class="col">
+            <h4>New booking</h4>
+            <form>
+                <label for="client">Client</label>
+                <input type="text" id="client" name="client">
+
+                <label for="service">Service</label>
+                <select id="service" name="service">
+                    <option>Haircut</option>
+                    <option>Beard</option>
+                    <option>Manicure</option>
+                    <option>Massage</option>
+                    <option>Consultation</option>
+                </select>
+
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date">
+
+                <label for="time">Time</label>
+                <input type="time" id="time" name="time">
+
+                <button type="submit">Book</button>
+            </form>
+
+        </div>
+
+        <div class="col">
+            <!-- Здесь будет Booking Information -->
+            <div class="card">
+                <div class="card body">
+                    <h5 class="card title">
+                        Booking information
+                    </h5>
+                    <p class="card text">Please select a service,date and time for your booking.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
