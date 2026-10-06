@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #custom app
     'booking_manager',
+    'django_extensions',
 
 ]
 
