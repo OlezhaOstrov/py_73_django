@@ -1,0 +1,24 @@
+{%extends "base.html"%}
+
+{% block content %}
+
+<h2>Bookings</h2>
+{% for booking in bookings %}
+    <h5>Date: {{booking.date}}</h5>
+    <p>Time: {{booking.time}}</p>
+    <p>Client: {{booking.client}}</p>
+    <p>Service: {{booking.service}}</p>
+    <p>Status:
+        {% if booking.status == "confirmed" %}
+            <span class="badge bg-success">{{booking.status}}</span>
+        {% elif booking.status == "pending" %}
+            <span class="badge bg-warning ">{{booking.status}}</span>
+        {% elif booking.status == "cancelled" %}
+            <span class="badge bg-danger ">{{booking.status}}</span>
+    {% endif %}
+    </p>
+    <button class="btn btn-primary btn-sm">View</button>
+    <button class="btn btn-danger btn-sm">Cancel</button>
+{% endfor %}
+
+{% endblock %}

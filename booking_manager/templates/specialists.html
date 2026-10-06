@@ -1,0 +1,16 @@
+{%extends "base.html"%}
+
+{% block content %}
+
+<h2>Specialists</h2>
+{% for specialist in specialists %}
+<div class="card">
+    <div class="card body">
+        <h5 class="card title">{{specialist.name}}</h5>
+        <p class="card text">Speciality: {{specialist.speciality}}</p>
+        <p class="card text">Experience: {{specialist.experience}} years</p>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
