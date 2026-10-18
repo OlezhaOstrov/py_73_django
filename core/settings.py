@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     #custom app
     'booking_manager',
     'django_extensions',
-
+    'account',
 ]
 
 MIDDLEWARE = [
