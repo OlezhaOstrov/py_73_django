@@ -1,22 +1,28 @@
 from django.db import models
-from booking_manager.constants import CategoryChoices
+from booking_manager.models.base import BaseModel
+from booking_manager.models.booking_service import BookingService
+from account.models.client import Client
+from account.models.barber import Barber
 
-class Booking(models.Model):
+class Booking(BaseModel):
     name = models.CharField(max_length=100,
                             verbose_name='Название',
                             )
     price = models.FloatField(verbose_name='Цена',
                               null=True,
                               blank=True)
-    category = models.CharField(max_length=100,
-                                default=CategoryChoices.HAIRCUT,
-                                choices=CategoryChoices,
-                                verbose_name='Категория'
-                                )
+
     visit_time = models.TimeField(null=True,blank=True,verbose_name='Время визита')
     is_active = models.BooleanField(default=True,verbose_name='Активно')
-    created_at = models.DateTimeField(auto_now_add=True,verbose_name='Дата создания')
-    updated_at = models.DateTimeField(auto_now=True,verbose_name='Обновленная запись')
+
+    booking_service = models.ForeignKey(BookingService,
+                                        related_name='bookings',
+                                        on_delete=models.SET_NULL,
+                                        verbose_name='услуги',
+                                        null=True)
+    client = models.ForeignKey(Client,related_name='bookings',on_delete=models.SET_NULL,null=True)
+    barber = models.ForeignKey(Barber,related_name='bookings',on_delete=models.SET_NULL,null=True)
+
 
     def __str__(self):
         return self.name
