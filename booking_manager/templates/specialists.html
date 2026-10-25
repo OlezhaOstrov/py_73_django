@@ -2,15 +2,54 @@
 
 {% block content %}
 
-<h2>Specialists</h2>
-{% for specialist in specialists %}
-<div class="card">
-    <div class="card body">
-        <h5 class="card title">{{specialist.name}}</h5>
-        <p class="card text">Speciality: {{specialist.speciality}}</p>
-        <p class="card text">Experience: {{specialist.experience}} years</p>
-    </div>
+<div class="text-center mb-5">
+    <h1 class="display-5 fw-bold">Наши специалисты</h1>
+    <p class="text-muted">
+        Познакомьтесь с нашими барберами и отзывами клиентов
+    </p>
 </div>
-{% endfor %}
 
+<div class="row g-4">
+    {% for barber in barbers %}
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+
+            <div class="card-body">
+                <h5 class="card-title fw-bold">
+                    {{ barber.user.get_full_name|default:barber.user.username }}
+                </h5>
+
+                <p class="text-muted mb-3">
+                    Опыт работы: {{ barber.experience }} лет
+                </p>
+
+                <hr>
+
+                <h6 class="fw-bold mb-3">Отзывы клиентов</h6>
+
+                {% for comment in barber.comment.all %}
+                <div class="mb-3">
+                    <p class="mb-1">{{ comment.text }}</p>
+
+                    <span class="badge text-bg-warning">
+                        Оценка: {{ comment.rating }}/5
+                    </span>
+                </div>
+                {% empty %}
+                <p class="text-muted">
+                    Пока нет отзывов об этом специалисте.
+                </p>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <p class="text-center text-muted">
+            Специалисты пока не добавлены.
+        </p>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

@@ -16,3 +16,5 @@ class ProductBooking(BaseModel):
     class Meta:
         db_table = 'product_booking'
         ordering = ['-created_at']
+        verbose_name = 'Товары и бронирования'
+        verbose_name_plural = 'Товары и бронирования'

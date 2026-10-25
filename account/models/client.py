@@ -21,5 +21,6 @@ class Client(BaseModel):
 
     class Meta:
         db_table = 'clients'
-        verbose_name_plural = 'Клиент'
+        verbose_name = 'Клиенты'
+        verbose_name_plural = 'Клиенты'
         ordering = ['-created_at','name']

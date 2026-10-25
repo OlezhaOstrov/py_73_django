@@ -2,10 +2,10 @@ from django.db import models
 from booking_manager.models.base import BaseModel
 from django.conf import settings
 from booking_manager.models.barbershop import Barbershop
+from booking_manager.models.raitingmixin import RatingMixin
 
-class Barber(BaseModel):
+class Barber(BaseModel, RatingMixin):
     experience = models.IntegerField()
-    rating = models.IntegerField()
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -22,5 +22,6 @@ class Barber(BaseModel):
 
     class Meta:
         db_table = 'barbers'
-        verbose_name = 'Барбер'
+        verbose_name = 'Барберы'
+        verbose_name_plural = 'Барберы'
         ordering = ['-created_at','-experience']

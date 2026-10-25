@@ -2,9 +2,9 @@ from django.db import models
 from booking_manager.models.base import BaseModel
 from account.models.client import Client
 from account.models.barber import Barber
-class Comment(BaseModel):
+from booking_manager.models.raitingmixin import RatingMixin
+class Comment(BaseModel,RatingMixin):
     text = models.TextField(verbose_name='Текст комментария')
-    rating = models.PositiveIntegerField(null=True,verbose_name='')
     is_published = models.BooleanField(default=True)
     client = models.ForeignKey(to=Client,
                                   on_delete=models.SET_NULL,
@@ -29,4 +29,5 @@ class Comment(BaseModel):
     class Meta:
         db_table = 'comment'
         ordering = ['-created_at']
-        verbose_name = 'Комментарий'
+        verbose_name = 'Комментарии'
+        verbose_name_plural = 'Комментарии'

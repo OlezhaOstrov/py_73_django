@@ -10,6 +10,7 @@ class Promotion(BaseModel):
     start_date = models.DateTimeField(verbose_name='Дата начала акции')
     end_time = models.DateTimeField(verbose_name='Дата окончания акции')
     services = models.ManyToManyField(BookingService, related_name='promotions')
+    is_active = models.BooleanField(default=True,verbose_name='Активна')
 
     def __str__(self):
         return self.name
@@ -17,3 +18,5 @@ class Promotion(BaseModel):
     class Meta:
         db_table = 'promotions'
         ordering = ['-created_at']
+        verbose_name = 'Акции'
+        verbose_name_plural = 'Акции'

@@ -15,4 +15,6 @@ class Barbershop(BaseModel):
     class Meta:
         db_table = 'barbershop'
         ordering = ['is_active']
+        verbose_name = 'Барбершоп'
+        verbose_name_plural = 'Барбершоп'
 

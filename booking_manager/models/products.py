@@ -14,6 +14,8 @@ class Product(BaseModel):
     class Meta:
         db_table = 'product'
         ordering = ['-created_at','price']
+        verbose_name = 'Товары'
+        verbose_name_plural = 'Товары'
 
     def __str__(self):
         return self.name
