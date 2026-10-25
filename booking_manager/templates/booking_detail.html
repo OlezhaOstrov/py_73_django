@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container py-5">
+
+    <h1 class="mb-4">Информация о бронировании</h1>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ booking.name }}</h5>
+
+            <p>
+                <strong>Клиент:</strong>
+                {{ booking.client }}
+            </p>
+
+            <p>
+                <strong>Барбер:</strong>
+                {{ booking.barber }}
+            </p>
+
+            <p>
+                <strong>Услуга:</strong>
+                {{ booking.booking_service }}
+            </p>
+
+            <p>
+                <strong>Время визита:</strong>
+                {{ booking.visit_time|default:"Не указано" }}
+            </p>
+
+            <p class="mb-0">
+                <strong>Цена:</strong>
+                {{ booking.price|default:"Не указана" }}
+            </p>
+        </div>
+    </div>
+
+    <h2 class="h4 mb-3">Дополнительные товары</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            {% for item in booking.product_items.all %}
+                <div class="d-flex justify-content-between border-bottom py-2">
+                    <span>{{ item.product }}</span>
+                    <span>Количество: {{ item.quantity }}</span>
+                </div>
+            {% empty %}
+                <p class="text-muted mb-0">
+                    К этому бронированию товары не добавлены.
+                </p>
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
