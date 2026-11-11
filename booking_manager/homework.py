@@ -1,6 +1,12 @@
 from booking_manager.models import Booking
 from booking_manager.constants import CategoryChoices
 from datetime import date
+from django.db.models import Count, Min, Max, Avg, F, Sum,Q
+from booking_manager.models.booking import BookingService
+from account.models.barber import Barber
+from account.models.client import Client
+from functools import lru_cache
+
 
 #Получить все задачи из базы данных.
 qs = Booking.objects.all()
@@ -45,3 +51,65 @@ qs11 = Booking.objects.filter(visit_time__isnull=True).update(is_active = False)
 qs12 = Booking.objects.filter(price__lt = 20).delete()
 
 
+
+#АГГРЕГАЦИЯ и АННОТАЦИЯ
+#задание 1
+services = BookingService.objects.aggregate(
+  count_services = Count('id'),
+  min_price = Min('price'),
+  max_price = Max('price'),
+  avg_price = Avg('price')
+)
+
+
+#задание 2
+barbers = Barber.objects.annotate(
+    count_bookings = Count('bookings')).order_by('-count_bookings')
+for barber in barbers:
+  print(barber.name, barber.count_bookings)
+
+
+#задание 3
+services = BookingService.objects.annotate(
+    count_services = Count('bookings')).filter(count_services__gt = 3)
+
+
+#задание 4
+clients = Client.objects.annotate(count_bookings = Count('bookings'))
+average = clients.aggregate(avg_bookings = Avg('count_bookings'))
+result = clients.filter__gt = average['(avg_bookings']
+
+
+#задание 5
+barbers = Barber.objects.annotate(
+    avg_rating = Avg('comment__rating')).filter(avg_rating__gt = 4.5)
+
+
+#задание 6
+quantity_bookings = Barber.objects.annotate(
+  count_is_active_bookings = Count('bookings', filter = Q(bookings__is_active = True)),
+  count_is_not_active_bookings = Count('bookings',filter = Q(bookings__is_active = False))
+)
+
+
+#задание 7
+clients = Client.objects.annotate(
+    total_spent = Sum('bookings__booking_service__price')).filter(total_spent__gt = 1000)
+
+
+#задание 8
+client_bookings = Booking.objects.annotate(
+    products_total = Sum(F('product_items__quantity')* F('product_items__product__price')))
+
+
+
+
+
+#Рекурсия с кэшированием
+@lru_cache(maxsize=123)
+def sum_numbers(numbers):
+    if not numbers:
+        return 0
+    if numbers[0] > 0:
+        return numbers[0] + sum_numbers(numbers[1:])
+print(sum_numbers((2,4,-5,-1,7,-4)))

@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+
+from django.conf.global_settings import LOGIN_URL
+
 from .env import env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,8 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #custom app
-    'booking_manager',
+    'booking_manager.apps.BookingManagerConfig',
     'django_extensions',
+    'account',
+    'debug_toolbar',
+    'crispy_forms',
+    'crispy_bootstrap5',
+
 
 ]
 
@@ -48,6 +56,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -134,4 +143,20 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+INTERNAL_IPS = ["127.0.0.1",]
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+LOGIN_URL = '/admin/login/'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'django_cache_table',
+        'TIMEOUT': 600,
+    }
+}
+
+
 
