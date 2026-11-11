@@ -1,48 +1,693 @@
-{%extends "base.html"%}
+{% extends "base.html" %}
+
+
 
 {% block content %}
-<div class="container">
-    <div class="row">
 
-        <div class="col">
-            <h4>New booking</h4>
-            <form>
-                <label for="client">Client</label>
-                <input type="text" id="client" name="client">
 
-                <label for="service">Service</label>
-                <select id="service" name="service">
-                    <option>Haircut</option>
-                    <option>Beard</option>
-                    <option>Massage</option>
-                    <option>Mustache</option>
-                </select>
 
-                <label for="date">Date</label>
-                <input type="date" id="date" name="date">
+<style>
 
-                <label for="time">Time</label>
-                <input type="time" id="time" name="time">
+    .booking-page {
 
-                <button type="submit">Book</button>
+        min-height: 85vh;
+
+        padding: 60px 15px;
+
+        background:
+
+            radial-gradient(circle at 15% 20%, #302315 0, transparent 35%),
+
+            radial-gradient(circle at 90% 80%, #292015 0, transparent 30%),
+
+            #090b0e;
+
+        color: #f5f2ec;
+
+    }
+
+
+
+    .booking-card {
+
+        max-width: 1100px;
+
+        margin: 0 auto;
+
+        display: grid;
+
+        grid-template-columns: 0.85fr 1.15fr;
+
+        overflow: hidden;
+
+        border: 1px solid #51412b;
+
+        border-radius: 24px;
+
+        background: #11151a;
+
+        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.55);
+
+    }
+
+
+
+    .booking-intro {
+
+        position: relative;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        padding: 50px 40px;
+
+        background:
+
+            linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.92)),
+
+            radial-gradient(ellipse at 50% 35%, #73502d 0%, #282016 40%, #0b0d10 85%);
+
+        border-right: 1px solid #393027;
+
+    }
+
+
+
+    .booking-label {
+
+        color: #e7bd78;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        letter-spacing: 3px;
+
+        text-transform: uppercase;
+
+    }
+
+
+
+    .booking-intro h1 {
+
+        margin: 22px 0;
+
+        color: #f8f3e9;
+
+        font-family: Georgia, serif;
+
+        font-size: clamp(36px, 4vw, 54px);
+
+        line-height: 1.12;
+
+    }
+
+
+
+    .booking-intro p {
+
+        color: #c0c0c0;
+
+        line-height: 1.8;
+
+    }
+
+
+
+    .booking-benefits {
+
+        display: grid;
+
+        gap: 22px;
+
+        margin-top: 35px;
+
+    }
+
+
+
+    .booking-benefit {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 15px;
+
+        color: #e8e2d8;
+
+    }
+
+
+
+    .benefit-icon {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 46px;
+
+        height: 46px;
+
+        flex-shrink: 0;
+
+        border: 1px solid #b58a4c;
+
+        border-radius: 50%;
+
+        color: #e7bd78;
+
+        font-size: 21px;
+
+    }
+
+
+
+    .booking-form-panel {
+
+        padding: 48px 45px;
+
+    }
+
+
+
+    .booking-heading {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 18px;
+
+        margin-bottom: 30px;
+
+    }
+
+
+
+    .booking-heading-icon {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 58px;
+
+        height: 58px;
+
+        flex-shrink: 0;
+
+        border: 1px solid #b58a4c;
+
+        border-radius: 16px;
+
+        background: #292319;
+
+        font-size: 27px;
+
+    }
+
+
+
+    .booking-heading h2 {
+
+        margin: 0 0 7px;
+
+        color: #fff;
+
+        font-size: 27px;
+
+        font-weight: 700;
+
+    }
+
+
+
+    .booking-heading p {
+
+        margin: 0;
+
+        color: #a5aab3;
+
+        font-size: 14px;
+
+    }
+
+
+
+    /* Стили полей, которые Django выводит через form.as_p */
+
+    .booking-form p {
+
+        margin-bottom: 22px;
+
+    }
+
+
+
+    .booking-form label {
+
+        display: block;
+
+        margin-bottom: 9px;
+
+        color: #e7bd78;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+    }
+
+
+
+    .booking-form input,
+
+    .booking-form select,
+
+    .booking-form textarea {
+
+        display: block;
+
+        width: 100%;
+
+        min-height: 49px;
+
+        padding: 12px 15px;
+
+        border: 1px solid #373d45;
+
+        border-radius: 12px;
+
+        outline: none;
+
+        background-color: #171c22;
+
+        color: #f5f2ec;
+
+        font-size: 15px;
+
+        transition: border-color .2s, box-shadow .2s;
+
+    }
+
+
+
+    .booking-form input:focus,
+
+    .booking-form select:focus,
+
+    .booking-form textarea:focus {
+
+        border-color: #d5a65e;
+
+        box-shadow: 0 0 0 3px rgba(213, 166, 94, .15);
+
+    }
+
+
+
+    .booking-form input[type="checkbox"] {
+
+        display: inline-block;
+
+        width: auto;
+
+        min-height: auto;
+
+    }
+
+
+
+    .booking-form textarea {
+
+        min-height: 120px;
+
+        resize: vertical;
+
+    }
+
+
+
+    .booking-form .helptext {
+
+        display: block;
+
+        margin-top: 6px;
+
+        color: #9da3ad;
+
+        font-size: 12px;
+
+    }
+
+
+
+    .booking-form ul.errorlist {
+
+        padding: 10px 14px;
+
+        border-radius: 8px;
+
+        background: #3a171a;
+
+        color: #ffb8b8;
+
+        list-style: none;
+
+        font-size: 13px;
+
+    }
+
+
+
+    .booking-errors {
+
+        margin-bottom: 22px;
+
+        padding: 14px 16px;
+
+        border: 1px solid #813b42;
+
+        border-radius: 12px;
+
+        background: #301619;
+
+        color: #ffd5d5;
+
+    }
+
+
+
+    .booking-submit {
+
+        width: 100%;
+
+        margin-top: 8px;
+
+        padding: 16px 20px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        background: linear-gradient(135deg, #f1d39a, #c18b42);
+
+        color: #17120a;
+
+        font-size: 16px;
+
+        font-weight: 800;
+
+        transition: transform .2s, box-shadow .2s;
+
+        cursor: pointer;
+
+    }
+
+
+
+    .booking-submit:hover {
+
+        transform: translateY(-2px);
+
+        box-shadow: 0 10px 25px rgba(193, 139, 66, .22);
+
+    }
+
+
+
+    .booking-security {
+
+        margin-top: 17px;
+
+        color: #a5aab3;
+
+        text-align: center;
+
+        font-size: 12px;
+
+    }
+
+
+
+    .booking-quote {
+
+        margin-top: 30px;
+
+        padding-top: 22px;
+
+        border-top: 1px solid #30353c;
+
+        color: #c4c6ca;
+
+        text-align: center;
+
+        font-family: Georgia, serif;
+
+        font-style: italic;
+
+        line-height: 1.7;
+
+    }
+
+
+
+    @media (max-width: 768px) {
+
+        .booking-page {
+
+            padding: 25px 12px;
+
+        }
+
+
+
+        .booking-card {
+
+            grid-template-columns: 1fr;
+
+        }
+
+
+
+        .booking-intro {
+
+            padding: 35px 25px;
+
+            border-right: none;
+
+            border-bottom: 1px solid #393027;
+
+        }
+
+
+
+        .booking-benefits {
+
+            gap: 14px;
+
+            margin-top: 22px;
+
+        }
+
+
+
+        .booking-form-panel {
+
+            padding: 30px 22px;
+
+        }
+
+
+
+        .booking-heading h2 {
+
+            font-size: 23px;
+
+        }
+
+    }
+
+</style>
+
+
+
+<div class="booking-page">
+
+    <div class="booking-card">
+
+
+
+        <section class="booking-intro">
+
+            <span class="booking-label">
+
+                Профессиональный уход
+
+            </span>
+
+
+
+            <h1>
+
+                Запишись<br>
+
+                на стрижку
+
+            </h1>
+
+
+
+            <p>
+
+                Выбери услугу, мастера и удобное время —
+
+                мы позаботимся о твоём стиле.
+
+            </p>
+
+
+
+            <div class="booking-benefits">
+
+                <div class="booking-benefit">
+
+                    <div class="benefit-icon">✂</div>
+
+                    <div>
+
+                        <strong>Опытные мастера</strong><br>
+
+                        <small>Внимание к деталям</small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="booking-benefit">
+
+                    <div class="benefit-icon">◇</div>
+
+                    <div>
+
+                        <strong>Качество и стиль</strong><br>
+
+                        <small>Индивидуальный подход</small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="booking-benefit">
+
+                    <div class="benefit-icon">☆</div>
+
+                    <div>
+
+                        <strong>Комфортная атмосфера</strong><br>
+
+                        <small>Время для себя</small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section class="booking-form-panel">
+
+            <div class="booking-heading">
+
+                <div class="booking-heading-icon">📅</div>
+
+                <div>
+
+                    <h2>Новое бронирование</h2>
+
+                    <p>Заполни форму, чтобы записаться к мастеру</p>
+
+                </div>
+
+            </div>
+
+
+
+            <form method="post" class="booking-form">
+
+                {% csrf_token %}
+
+
+
+                {% if form.errors %}
+
+                    <div class="booking-errors">
+
+                        <strong>Проверь введённые данные.</strong>
+
+                        {{ form.errors }}
+
+                    </div>
+
+                {% endif %}
+
+
+
+                {{ form.as_p }}
+
+
+
+                <button type="submit" class="booking-submit">
+
+                    ✂ &nbsp; Забронировать
+
+                </button>
+
             </form>
 
-        </div>
 
-        <div class="col">
-            <!-- Здесь будет Booking Information -->
-            <div class="card">
-                <div class="card body">
-                    <h5 class="card title">
-                        Booking information
-                    </h5>
-                    <p class="card text">Please select a service,date and time for your booking.</p>
-                </div>
+
+            <div class="booking-security">
+
+                ◈ Данные формы защищены
+
             </div>
-        </div>
+
+
+
+            <div class="booking-quote">
+
+                «Хорошая стрижка — это не просто стиль,<br>
+
+                это уверенность в себе»
+
+            </div>
+
+        </section>
+
+
 
     </div>
 
 </div>
+
+
 
 {% endblock %}

@@ -1,60 +1,448 @@
 {% extends "base.html" %}
+
 {% block content %}
 
-<div class="container py-5">
+<style>
+    .detail-page {
+        color: #f5f5f5;
+        padding: 45px 0 70px;
+    }
 
-    <h1 class="mb-4">Информация о бронировании</h1>
+    .detail-back {
+        display: inline-block;
+        color: #e8ad4b;
+        text-decoration: none;
+        margin-bottom: 25px;
+        transition: color 0.2s ease;
+    }
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <h5 class="card-title">{{ booking.name }}</h5>
+    .detail-back:hover {
+        color: #ffd580;
+    }
 
-            <p>
-                <strong>Клиент:</strong>
-                {{ booking.client }}
-            </p>
+    .detail-eyebrow {
+        color: #e8ad4b;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
 
-            <p>
-                <strong>Барбер:</strong>
-                {{ booking.barber }}
-            </p>
+    .detail-title {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        margin-bottom: 10px;
+        overflow-wrap: anywhere;
+    }
 
-            <p>
-                <strong>Услуга:</strong>
-                {{ booking.booking_service }}
-            </p>
+    .detail-title span {
+        color: #e8ad4b;
+    }
 
-            <p>
-                <strong>Время визита:</strong>
-                {{ booking.visit_time|default:"Не указано" }}
-            </p>
+    .detail-subtitle {
+        color: #aaa;
+        margin-bottom: 30px;
+    }
 
-            <p class="mb-0">
-                <strong>Цена:</strong>
-                {{ booking.price|default:"Не указана" }}
-            </p>
+    .detail-card {
+        background: linear-gradient(145deg, #252525, #191919);
+        border: 1px solid #3b3428;
+        border-radius: 16px;
+        padding: 25px;
+        height: 100%;
+    }
+
+    .detail-card-title {
+        color: #e8ad4b;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 22px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #393939;
+    }
+
+    .detail-info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 18px;
+        padding: 14px 0;
+        border-bottom: 1px solid #333;
+    }
+
+    .detail-info-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-info-label {
+        color: #999;
+        flex-shrink: 0;
+    }
+
+    .detail-info-value {
+        color: #f5f5f5;
+        font-weight: 600;
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    .detail-status {
+        display: inline-block;
+        border-radius: 20px;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .detail-status-active {
+        color: #65d69a;
+        background: rgba(25, 135, 84, 0.18);
+        border: 1px solid rgba(101, 214, 154, 0.3);
+    }
+
+    .detail-status-inactive {
+        color: #bbb;
+        background: #303030;
+        border: 1px solid #454545;
+    }
+
+    .detail-price-box {
+        background: rgba(232, 173, 75, 0.08);
+        border: 1px solid #6d532b;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 22px;
+    }
+
+    .detail-price-label {
+        color: #aaa;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .detail-price-value {
+        color: #e8ad4b;
+        font-size: 2rem;
+        font-weight: 800;
+    }
+
+    .products-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .product-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        background: #202020;
+        border: 1px solid #363636;
+        border-radius: 10px;
+        padding: 15px;
+    }
+
+    .product-name {
+        color: #f5f5f5;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .product-quantity {
+        color: #aaa;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+
+    .product-total {
+        color: #e8ad4b;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .products-empty {
+        text-align: center;
+        padding: 30px 15px;
+        background: #202020;
+        border-radius: 10px;
+        border: 1px dashed #4a4a4a;
+    }
+
+    .products-empty-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .products-empty p {
+        color: #aaa;
+        margin-bottom: 0;
+    }
+
+    .detail-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .detail-button {
+        display: inline-block;
+        padding: 11px 18px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: transform 0.2s ease,
+                    background 0.2s ease;
+    }
+
+    .detail-button:hover {
+        transform: translateY(-2px);
+    }
+
+    .detail-button-primary {
+        background: linear-gradient(135deg, #f5c15e, #dfa03a);
+        color: #191919;
+    }
+
+    .detail-button-primary:hover {
+        color: #191919;
+        background: #ffd580;
+    }
+
+    .detail-button-secondary {
+        border: 1px solid #80632f;
+        color: #e8ad4b;
+    }
+
+    .detail-button-secondary:hover {
+        color: #ffd580;
+        background: rgba(232, 173, 75, 0.08);
+    }
+
+    @media (max-width: 576px) {
+        .detail-page {
+            padding-top: 30px;
+        }
+
+        .detail-card {
+            padding: 20px;
+        }
+
+        .detail-info-row {
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .detail-info-value {
+            text-align: left;
+        }
+    }
+</style>
+
+<div class="detail-page">
+    <div class="container">
+
+        <a href="{% url 'bookings' %}" class="detail-back">
+            ← Назад к бронированиям
+        </a>
+
+        <div class="detail-eyebrow">
+            Барбершоп • Запись
         </div>
-    </div>
 
-    <h2 class="h4 mb-3">Дополнительные товары</h2>
+        <h1 class="detail-title">
+            Детали <span>бронирования</span>
+        </h1>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
+        <p class="detail-subtitle">
+            Полная информация о записи и дополнительных товарах.
+        </p>
 
-            {% for item in booking.product_items.all %}
-                <div class="d-flex justify-content-between border-bottom py-2">
-                    <span>{{ item.product }}</span>
-                    <span>Количество: {{ item.quantity }}</span>
+        <div class="row g-4">
+
+            <!-- Основная информация -->
+            <div class="col-12 col-lg-6">
+                <div class="detail-card">
+
+                    <h2 class="detail-card-title">
+                        ✂ Информация о записи
+                    </h2>
+
+                    <div class="detail-info-row">
+                        <span class="detail-info-label">
+                            Номер бронирования
+                        </span>
+                        <span class="detail-info-value">
+                            #{{ booking.id }}
+                        </span>
+                    </div>
+
+                    <div class="detail-info-row">
+                        <span class="detail-info-label">
+                            Название
+                        </span>
+                        <span class="detail-info-value">
+                            {{ booking.name }}
+                        </span>
+                    </div>
+
+                    <div class="detail-info-row">
+                        <span class="detail-info-label">
+                            Клиент
+                        </span>
+                        <span class="detail-info-value">
+                            {% if booking.client %}
+                                {{ booking.client.name }}
+                            {% else %}
+                                Не указан
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="detail-info-row">
+                        <span class="detail-info-label">
+                            Барбер
+                        </span>
+                        <span class="detail-info-value">
+                            {% if booking.barber %}
+                                {{ booking.barber.name }}
+                            {% else %}
+                                Не указан
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="detail-info-row">
+                        <span class="detail-info-label">
+                            Услуга
+                        </span>
+                        <span class="detail-info-value">
+                            {% if booking.booking_service %}
+                                {{ booking.booking_service.name }}
+                            {% else %}
+                                Не указана
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="detail-info-row">
+                        <span class="detail-info-label">
+                            Время визита
+                        </span>
+                        <span class="detail-info-value">
+                            {{ booking.visit_time|default:"Не указано" }}
+                        </span>
+                    </div>
+
+                    <div class="detail-info-row">
+                        <span class="detail-info-label">
+                            Статус
+                        </span>
+                        <span class="detail-info-value">
+                            {% if booking.is_active %}
+                                <span class="detail-status detail-status-active">
+                                    Активно
+                                </span>
+                            {% else %}
+                                <span class="detail-status detail-status-inactive">
+                                    Неактивно
+                                </span>
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="detail-price-box">
+                        <div class="detail-price-label">
+                            Стоимость записи
+                        </div>
+
+                        <div class="detail-price-value">
+                            {% if booking.price != None %}
+                                {{ booking.price }} €
+                            {% else %}
+                                Не указана
+                            {% endif %}
+                        </div>
+                    </div>
+
                 </div>
-            {% empty %}
-                <p class="text-muted mb-0">
-                    К этому бронированию товары не добавлены.
-                </p>
-            {% endfor %}
+            </div>
+
+            <!-- Дополнительные товары -->
+            <div class="col-12 col-lg-6">
+                <div class="detail-card">
+
+                    <h2 class="detail-card-title">
+                        🛍 Дополнительные товары
+                    </h2>
+
+                    <div class="products-list">
+
+                        {% for item in booking.product_items.all %}
+
+                            <div class="product-row">
+
+                                <div>
+                                    <div class="product-name">
+                                        {{ item.product }}
+                                    </div>
+
+                                    <div class="product-quantity">
+                                        Количество: {{ item.quantity }}
+                                    </div>
+                                </div>
+
+                                <div class="product-total">
+                                    {% if item.total_price != None %}
+                                        {{ item.total_price }} €
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </div>
+
+                            </div>
+
+                        {% empty %}
+
+                            <div class="products-empty">
+                                <div class="products-empty-icon">
+                                    📦
+                                </div>
+
+                                <p>
+                                    К этому бронированию пока
+                                    не добавлены дополнительные товары.
+                                </p>
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="detail-actions">
+                        <a href="{% url 'product_booking' booking.id %}"
+                           class="detail-button detail-button-primary">
+                            + Добавить товар
+                        </a>
+
+                        <a href="{% url 'ClientUpdateBooking' booking.pk %}"
+                           class="detail-button detail-button-primary">
+                            Изменить бронирование
+                        </a>
+
+                        <a href="{% url 'bookings' %}"
+                           class="detail-button detail-button-secondary">
+                            К списку бронирований
+                        </a>
+                    </div>
+
+                </div>
+            </div>
 
         </div>
     </div>
-
 </div>
 
 {% endblock %}

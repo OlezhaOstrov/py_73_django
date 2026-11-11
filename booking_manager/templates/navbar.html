@@ -1,12 +1,147 @@
-<nav class="navbar navbar-expand bg-light">
+<style>
+    /* Основная панель навигации */
+    .booking-navbar {
+        background: linear-gradient(90deg, #151515, #292929);
+        border-bottom: 1px solid #3b3428;
+    }
+
+    /* Логотип */
+    .booking-brand {
+        display: flex;
+        flex-direction: column;
+        line-height: 1;
+        margin-right: 2rem;
+    }
+
+    .brand-name {
+        color: #e8ad4b;
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    .brand-dot {
+        color: #ffffff;
+    }
+
+    .brand-subtitle {
+        color: #b9b9b9;
+        font-size: 0.62rem;
+        letter-spacing: 2px;
+        margin-top: 7px;
+    }
+
+    /* Ссылки навигации */
+    .booking-link {
+        color: #dedede !important;
+        font-weight: 500;
+        padding: 1rem !important;
+        transition: color 0.2s ease;
+    }
+
+    .booking-link:hover {
+        color: #e8ad4b !important;
+    }
+
+    /* Кнопка нового бронирования */
+    .booking-button {
+        background: linear-gradient(135deg, #f5c15e, #dfa03a);
+        color: #191919;
+        border: none;
+        border-radius: 9px;
+        padding: 0.8rem 1.3rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform 0.2s ease,
+                    box-shadow 0.2s ease;
+    }
+
+    .booking-button:hover {
+        background: #ffd078;
+        color: #191919;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 18px rgba(232, 173, 75, 0.25);
+    }
+
+    /* Адаптация для телефонов */
+    @media (max-width: 991.98px) {
+        .booking-navbar .navbar-nav {
+            align-items: stretch !important;
+            padding-top: 1rem;
+        }
+
+        .booking-link {
+            padding: 0.7rem 0 !important;
+        }
+
+        .booking-button {
+            margin-top: 0.7rem;
+            text-align: center;
+        }
+
+        .booking-brand {
+            margin-right: 0;
+        }
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark booking-navbar shadow-sm">
     <div class="container py-2">
-        <a class="navbar-brand" href="{% url 'home' %}"><h1>Booking</h1></a>
-        <div class="navbar-nav">
-        <a class="nav-link px-4" href="{% url 'home' %}">Home</a>
-        <a class="nav-link px-4" href="{% url 'services' %}">Services</a>
-        <a class="nav-link px-4" href="{% url 'specialists' %}">Specialists</a>
-        <a class="nav-link px-4" href="{% url 'bookings' %}">Bookings</a>
-        <a class="nav-link px-4" href="{% url 'new booking' %}">New booking</a>
+
+        <!-- Логотип -->
+        <a class="navbar-brand booking-brand" href="{% url 'home' %}">
+            <span class="brand-name">
+                BOOKING<span class="brand-dot">.</span>
+            </span>
+            <span class="brand-subtitle">
+                BARBERSHOP & SERVICES
+            </span>
+        </a>
+
+        <!-- Кнопка меню на маленьких экранах -->
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#bookingNavbar"
+                aria-controls="bookingNavbar"
+                aria-expanded="false"
+                aria-label="Открыть меню">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Ссылки -->
+        <div class="collapse navbar-collapse" id="bookingNavbar">
+            <div class="navbar-nav ms-auto align-items-lg-center">
+
+                <a class="nav-link booking-link"
+                   href="{% url 'home' %}">
+                    Домой
+                </a>
+
+                <a class="nav-link booking-link"
+                   href="{% url 'services' %}">
+                    Услуги
+                </a>
+
+                <a class="nav-link booking-link"
+                   href="{% url 'specialists' %}">
+                    Специалисты
+                </a>
+
+                <a class="nav-link booking-link"
+                   href="{% url 'bookings' %}">
+                    Бронирования
+                </a>
+
+                <a class="btn booking-button ms-lg-4"
+                   href="{% url 'new booking' %}">
+                    <span class="me-2">＋</span>
+                    Новая запись
+                    <span class="ms-2">→</span>
+                </a>
+
+            </div>
         </div>
+
     </div>
 </nav>

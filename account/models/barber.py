@@ -12,10 +12,11 @@ class Barber(BaseModel, RatingMixin):
         related_name='barber',
     )
     name = models.CharField(max_length=50)
-    barbershop = models.ForeignKey(Barbershop,
-                                   on_delete=models.CASCADE,
-                                   related_name='barber'
-                                  )
+    barbershop = models.ForeignKey(
+        Barbershop,
+        on_delete=models.CASCADE,
+        related_name='barber'
+    )
 
     def __str__(self):
         return self.name

@@ -7,9 +7,12 @@ class Product(BaseModel):
     price = models.PositiveIntegerField()
     description = models.TextField(blank=True)
 
-    bookings = models.ManyToManyField(Booking,
-                                      related_name='products',
-                                      through='ProductBooking',)
+    bookings = models.ManyToManyField(
+        Booking,
+        related_name='products',
+        through='ProductBooking'
+    )
+    stock_quantity = models.PositiveIntegerField(default=0)
 
     class Meta:
         db_table = 'product'

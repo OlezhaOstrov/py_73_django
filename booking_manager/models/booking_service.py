@@ -5,13 +5,22 @@ from booking_manager.models.base import BaseModel
 
 class BookingService(BaseModel):
     name = models.CharField(max_length=100)
-    category = models.CharField(max_length=100,
-                                default=CategoryChoices.HAIRCUT,
-                                choices=CategoryChoices,
-                                verbose_name='Категория'
-                                )
+    category = models.CharField(
+        max_length=100,
+        default=CategoryChoices.HAIRCUT,
+        choices=CategoryChoices,
+        verbose_name='Категория'
+    )
     description = models.TextField(blank=True,null=True)
     price = models.FloatField(validators=[MinValueValidator(0)])
+    duration_minutes = models.PositiveIntegerField(
+        default=30,
+        verbose_name='Длительность в минутах'
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name='Активна'
+    )
 
     def __str__(self):
         return self.name

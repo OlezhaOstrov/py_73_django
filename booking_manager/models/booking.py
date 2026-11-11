@@ -6,22 +6,28 @@ from account.models.barber import Barber
 from booking_manager.managers import BookingManager
 
 
-class Booking(BaseModel):
-    name = models.CharField(max_length=100,
-                            verbose_name='Название',
-                            )
-    price = models.FloatField(verbose_name='Цена',
-                              null=True,
-                              blank=True)
 
-    visit_time = models.TimeField(null=True,blank=True,verbose_name='Время визита')
+class Booking(BaseModel):
+    name = models.CharField(
+        max_length=100,
+        verbose_name='Название',
+    )
+    price = models.FloatField(
+        verbose_name='Цена',
+        null=True,
+        blank=True
+    )
+
+    visit_time = models.DateTimeField(null=True,blank=True,verbose_name='Время визита')
     is_active = models.BooleanField(default=True,verbose_name='Активно')
 
-    booking_service = models.ForeignKey(BookingService,
-                                        related_name='bookings',
-                                        on_delete=models.SET_NULL,
-                                        verbose_name='услуги',
-                                        null=True)
+    booking_service = models.ForeignKey(
+        BookingService,
+        related_name='bookings',
+        on_delete=models.SET_NULL,
+        verbose_name='услуги',
+        null=True
+    )
     client = models.ForeignKey(Client,related_name='bookings',on_delete=models.SET_NULL,null=True)
     barber = models.ForeignKey(Barber,related_name='bookings',on_delete=models.SET_NULL,null=True)
 

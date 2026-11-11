@@ -1,16 +1,220 @@
-{%extends "base.html"%}
+{% extends "base.html" %}
 
 {% block content %}
 
-{% for service in services %}
-<div class="card">
-    <div class="card body">
-        <h5 class="card title">{{service.name}}</h5>
-        <p class="card text">Category: {{service.category}}</p>
-        <p class="card text">Duration: {{service.duration}}min</p>
-        <p class="card text">Price: {{service.price}}$</p>
+<style>
+    .services-page {
+        color: #f5f5f5;
+        padding: 50px 0 70px;
+    }
+
+    .services-header {
+        margin-bottom: 35px;
+    }
+
+    .services-label {
+        color: #e8ad4b;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .services-title {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .services-title span {
+        color: #e8ad4b;
+    }
+
+    .services-subtitle {
+        color: #aaa;
+        line-height: 1.7;
+    }
+
+    .service-card {
+        height: 100%;
+        padding: 25px;
+        background: linear-gradient(145deg, #252525, #191919);
+        border: 1px solid #3b3428;
+        border-radius: 15px;
+        transition: transform 0.2s ease,
+                    border-color 0.2s ease,
+                    box-shadow 0.2s ease;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        border-color: #a17b39;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .service-icon {
+        font-size: 2rem;
+        margin-bottom: 16px;
+    }
+
+    .service-name {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        overflow-wrap: anywhere;
+    }
+
+    .service-category {
+        display: inline-block;
+        padding: 5px 10px;
+        margin-bottom: 18px;
+        border-radius: 20px;
+        color: #e8ad4b;
+        background: rgba(232, 173, 75, 0.1);
+        border: 1px solid rgba(232, 173, 75, 0.25);
+        font-size: 0.8rem;
+    }
+
+    .service-info {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding-top: 15px;
+        margin-top: 10px;
+        border-top: 1px solid #393939;
+    }
+
+    .service-info-label {
+        color: #999;
+        font-size: 0.85rem;
+    }
+
+    .service-info-value {
+        color: #eee;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .service-price {
+        color: #e8ad4b;
+        font-size: 1.5rem;
+        font-weight: 800;
+    }
+
+    .services-empty {
+        text-align: center;
+        padding: 45px 20px;
+        background: #202020;
+        border: 1px solid #3b3428;
+        border-radius: 15px;
+    }
+
+    .services-empty h3 {
+        color: #e8ad4b;
+        margin-bottom: 12px;
+    }
+
+    .services-empty p {
+        color: #aaa;
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 576px) {
+        .services-page {
+            padding-top: 30px;
+        }
+
+        .service-card {
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="services-page">
+    <div class="container">
+
+        <!-- Заголовок -->
+        <div class="services-header">
+
+            <div class="services-label">
+                Профессиональный уход
+            </div>
+
+            <h1 class="services-title">
+                Наши <span>услуги</span>
+            </h1>
+
+            <p class="services-subtitle">
+                Выбирай подходящую услугу, узнавай её стоимость
+                и продолжительность. Мы позаботимся о твоём стиле.
+            </p>
+
+        </div>
+
+        <!-- Карточки услуг -->
+        <div class="row g-4">
+
+            {% for service in services %}
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="service-card">
+
+                        <div class="service-icon">✂️</div>
+
+                        <h2 class="service-name">
+                            {{ service.name }}
+                        </h2>
+
+                        <div class="service-category">
+                            {{ service.category }}
+                        </div>
+
+                        <div class="service-info">
+                            <span class="service-info-label">
+                                Продолжительность
+                            </span>
+
+                            <span class="service-info-value">
+                                {{ service.duration }}
+                            </span>
+                        </div>
+
+                        <div class="service-info">
+                            <span class="service-info-label">
+                                Стоимость
+                            </span>
+
+                            <span class="service-price">
+                                {% if service.price != None %}
+                                    {{ service.price }} €
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+            {% empty %}
+
+                <div class="col-12">
+                    <div class="services-empty">
+
+                        <h3>Услуги пока не добавлены</h3>
+
+                        <p>
+                            Скоро здесь появится список доступных услуг.
+                        </p>
+
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        </div>
     </div>
 </div>
-{% endfor %}
 
 {% endblock %}
